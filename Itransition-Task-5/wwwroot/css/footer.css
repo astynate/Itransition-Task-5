@@ -1,0 +1,16 @@
+﻿footer {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-footer span {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.main-footer {
+    color: #777;
+}

@@ -1,0 +1,19 @@
+﻿.user {
+    width: 100%;
+    background: white;
+    text-wrap: nowrap;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 20px;
+    text-overflow: ellipsis;
+    padding: 15px 20px;
+    border-radius: 10px;
+}
+
+    .user span {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }

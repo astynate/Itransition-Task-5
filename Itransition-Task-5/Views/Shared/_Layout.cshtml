@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Itransition</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/content.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/header.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/media.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/user.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <div class="main-container">
+            <div class="header-items">
+                <a asp-controller="Home" asp-action="Index" class="logo-wrapper">
+                    <img src="./img/itransition_logo.svg" class="main-logo" draggable="false" />
+                </a>
+                <div class="header-items">
+
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div class="main">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <div class="main-container">
+            &copy; Andreev S., 2024 — Minsk, Belarus
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

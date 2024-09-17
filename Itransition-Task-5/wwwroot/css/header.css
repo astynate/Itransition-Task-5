@@ -1,0 +1,50 @@
+﻿.main-logo {
+    height: 25px;
+    width: auto;
+    filter: invert(100%);
+}
+
+header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: var(--main-background-color);
+    user-select: none;
+}
+
+.header-items {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-wrapper {
+    height: fit-content;
+}
+
+.navigation-link {
+    height: 100%;
+    font-size: 16px;
+    color: #ccc;
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    margin-bottom: 2px;
+}
+
+    .navigation-link:hover {
+        color: #888;
+    }
+
+#selected {
+    color: black;
+    border-bottom: 3px solid black;
+}
+
+.main-navigation {
+    display: flex;
+    grid-gap: 30px;
+}
