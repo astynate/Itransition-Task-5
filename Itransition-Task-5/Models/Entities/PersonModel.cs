@@ -1,4 +1,4 @@
-namespace Itransition_Task_5.Models
+namespace Itransition_Task_5.Models.Entities
 {
     public record PersonModel
     (
