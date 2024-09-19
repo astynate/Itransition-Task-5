@@ -1,17 +1,18 @@
 ﻿.main-logo {
     height: 23px;
     width: auto;
-    filter: invert(100%);
+    /*filter: invert(100%);*/
 }
 
 header {
     position: sticky;
     top: 0;
     left: 0;
-    background: #000000FF;
+    background: white;
     backdrop-filter: blur(5px);
     user-select: none;
-    border-bottom: 1px solid #333;
+    position: sticky;
+    box-shadow: 0px 0px 100px #00000010;
 }
 
 .header-items {
@@ -38,20 +39,20 @@ header {
 }
 
     .header-items button:hover {
-        outline: 3px solid #1882FFA0;
+        outline: 3px solid #1882FF30;
     }
 
     .header-items button:active {
-        outline: 3px solid #1882FF60;
+        outline: 3px solid #1882FF10;
     }
 
 .header-item-wrapper {
     border-radius: 3px;
-    color: #fff;
+    color: #000;
     padding: 5px 10px;
     display: flex;
     align-items: center;
-    border: 1px solid #333;
+    border: 1px solid #D9D9D9;
     grid-gap: 10px;
     font-weight: 600;
 }

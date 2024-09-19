@@ -1,6 +1,5 @@
-﻿.user {
+﻿.user, .table-header {
     width: 100%;
-    background: #282A2C;
     text-wrap: nowrap;
     overflow: hidden;
     display: flex;
@@ -8,56 +7,59 @@
     justify-content: space-between;
     grid-gap: 10px;
     text-overflow: ellipsis;
-    padding: 18px 25px;
-    border-radius: 15px;
 }
 
-    .user:nth-child(1) {
-        top: 0px;
-        left: 0;
-        /*position: sticky;*/
-        background: black;
-        padding: 20px 25px;
-    }
+.user {
+    padding: 18px 25px;
+    border-radius: 15px;
+    background: white;
+}
+
+.table-header-wrapper {
+    top: 60px;
+    left: 0;
+    background: var(--main-background-color);
+    margin-top: 100px;
+    padding: 5px 25px;
+    position: sticky;
+}
 
 .main-border-bottom {
     padding-bottom: 0px;
-    border-bottom: 1px solid #333;
 }
 
 .user .line {
     height: 100%;
     width: 1px;
     max-width: 1px;
-    background: #555;
+    background: #D9D9D9;
 }
 
     .user span {
         max-width: 100%;
         overflow: hidden;
-        color: white;
+        color: black;
         font-size: 16px;
         font-weight: 500;
         text-overflow: ellipsis;
     }
 
-    .user span:nth-child(1) {
-        width: 4ch;
-    }
+        .user span:nth-child(1), .table-header span:nth-child(1) {
+            width: 5ch;
+        }
 
-        .user span:nth-child(3) {
+        .user span:nth-child(3), .table-header span:nth-child(3) {
             width: 320px;
         }
 
-        .user span:nth-child(5) {
+        .user span:nth-child(5), .table-header span:nth-child(5) {
             width: 140px;
         }
 
-        .user span:nth-child(7) {
+        .user span:nth-child(7), .table-header span:nth-child(7) {
             width: 140px;
         }
 
-
-        .user span:nth-child(9) {
+        .user span:nth-child(9), .table-header span:nth-child(9) {
             width: 140px;
         }

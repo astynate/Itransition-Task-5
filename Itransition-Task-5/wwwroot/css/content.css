@@ -1,93 +1,47 @@
-﻿.toolbar {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 59px;
-    left: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: #f5f5f5;
-}
-
-.users {
-    margin-top: 70px;
+﻿.users {
     width: 100%;
     display: flex;
     flex-direction: column;
     grid-gap: 10px;
 }
 
-.check-box-wrapper {
-    padding-top: 8px;
-    padding-bottom: 3px;
-    padding-left: 18px;
-    padding-right: 18px;
-    border-radius: 10px;
-    background: white;
+.loader {
+    display: flex;
+    padding: 30px 20px;
+    grid-gap: 7px;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
 }
 
-.control-button {
-    padding: 10px 20px;
-    padding-right: 18px;
-    font-weight: 600;
-    background: white;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    outline: none;
+.point {
+    height: 8px;
+    width: 8px;
+    border-radius: 100%;
+    background: #1882FF;
 }
 
-    .control-button img {
-        height: 16px;
+    .point:nth-child(1) {
+        animation: 1s loader-animation linear infinite 0.2s;
     }
 
-    .control-button:nth-child(1):hover {
-        outline: 4px solid #4BDC0D30;
+    .point:nth-child(2) {
+        animation: 1s loader-animation linear infinite 0.4s;
     }
 
-    .control-button:nth-child(2):hover {
-        outline: 4px solid #FFBB0030;
+    .point:nth-child(3) {
+        animation: 1s loader-animation linear infinite 0.8s;
     }
 
-    .control-button:nth-child(3):hover {
-        outline: 4px solid #FF282830;
+@keyframes loader-animation {
+    0% {
+        opacity: 0.2;
     }
-
-    .control-button:nth-child(1) {
-        color: #4BDC0D;
+    50% {
+        transform: scale(120%);
+        opacity: 1;
     }
-
-    .control-button:nth-child(2) {
-        color: #FFBB00;
+    100% {
+        opacity: 0.2;
     }
-
-    .control-button:nth-child(3) {
-        color: #FF2828;
-    }
-
-input[type="checkbox"] {
-    height: 30px;
-    width: 30px;
-    background: none;
-    cursor: pointer;
-}
-
-.container input:checked {
-    background-color: red;
-}
-
-input[type="checkbox"]:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-
-.grid-gap-10 {
-    grid-gap: 10px;
-}
-
-.align-items-center {
-    align-items: center;
 }

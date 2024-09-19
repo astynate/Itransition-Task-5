@@ -5,11 +5,13 @@ html, body {
 }
 
 body {
-    --main-background-color: #000;
+    --main-background-color: #F5F5F5;
 }
 
 body {
     background: var(--main-background-color);
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .main-wrapper {
@@ -20,6 +22,7 @@ body {
 .main {
     min-height: calc(100vh - 121px);
     display: flex;
+    flex-direction: column;
 }
 
 .main-container {

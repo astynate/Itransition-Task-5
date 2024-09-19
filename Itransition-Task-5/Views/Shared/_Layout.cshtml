@@ -3,14 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Itransition</title>
+    <title>Itransition Task 5</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/content.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/header.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/media.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/user.css" asp-append-version="true" />
 </head>
 <body>
@@ -23,19 +22,19 @@
                 <div class="header-items">
                     <div class="header-item-wrapper">
                         <span>Errors: </span>
-                        <input type="range" id="rangeInput" max="1000" maxlength="4" value="500" />
-                        <input type="number" id="numberInput" min="0" max="1000" maxlength="4" value="500" />
+                        <input type="range" id="rangeInput" max="10" maxlength="4" step="0.25" value="0" onchange="fetchUsers(true)" />
+                        <input type="number" id="numberInput" min="0" max="1000" maxlength="4" value="0" onchange="fetchUsers(true)" />
                     </div>
                     <div class="header-item-wrapper">
                         <span>Seed: </span>
-                        <input type="number" max="1000" min="0" maxlength="4" value="128" />
+                        <input type="number" id="seed" max="1000" min="0" maxlength="4" value="128" onchange="fetchUsers(true)" />
                     </div>
                     <div class="header-item-wrapper">
                         <span>Region: </span>
-                        <select>
-                            <option value="value1">Belarus</option>
-                            <option value="value1">Poland</option>
-                            <option value="value1">United Kingdom</option>
+                        <select id="region" onchange="fetchUsers(true)">
+                            <option value="en">United Kingdom</option>
+                            <option value="fr">France</option>
+                            <option value="de">Germany</option>
                         </select>
                     </div>
                     <button>Export</button>
@@ -43,10 +42,33 @@
             </div>
         </div>
     </header>
+    <div class="table-header-wrapper">
+        <div class="main-container">
+            <div class="table-header">
+                <span>#</span>
+                <div class="line"></div>
+                <span>Random ID</span>
+                <div class="line"></div>
+                <span>Name</span>
+                <div class="line"></div>
+                <span>Address</span>
+                <div class="line"></div>
+                <span>Phone number</span>
+            </div>
+        </div>
+    </div>
     <div class="main-wrapper">
+        @RenderBody()
         <div class="main-container">
             <div class="main">
-                @RenderBody()
+                <div class="users">
+
+                </div>
+            </div>
+            <div class="loader">
+                <div class="point"></div>
+                <div class="point"></div>
+                <div class="point"></div>
             </div>
         </div>
     </div>
@@ -68,6 +90,32 @@
         numberInput.addEventListener('input', function () {
             rangeInput.value = numberInput.value;
         });
+
+        async function fetchUsers(clear = false) {
+            try {
+                const seed = document.querySelector("#seed").value;
+                const localization = document.querySelector("#region").value;
+
+                const response = await fetch(`/home/users?seed=${seed}&localization=${localization}&error=${numberInput.value}`);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const htmlContent = await response.text();
+                const usersDiv = document.querySelector('.users');
+
+                if (clear) {
+                    usersDiv.innerHTML = "";
+                }
+
+                usersDiv.innerHTML += htmlContent;
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchUsers);
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
