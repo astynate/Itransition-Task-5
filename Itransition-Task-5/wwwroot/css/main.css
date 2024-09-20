@@ -6,12 +6,14 @@ html, body {
 
 body {
     --main-background-color: #F5F5F5;
+    color-scheme: light;
 }
 
 body {
     background: var(--main-background-color);
     overflow-x: hidden;
     overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 
 .main-wrapper {

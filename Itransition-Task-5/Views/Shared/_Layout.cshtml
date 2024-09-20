@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/content.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/header.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/user.css" asp-append-version="true" />
@@ -27,7 +26,10 @@
                     </div>
                     <div class="header-item-wrapper">
                         <span>Seed: </span>
-                        <input type="number" id="seed" max="1000" min="0" maxlength="4" value="128" onchange="fetchUsers(true)" />
+                        <input type="number" id="seed" max="1000" min="0" maxlength="4" value="0" onchange="fetchUsers(true)" />
+                        <div class="button" onclick="GenerateRandomSeed()">
+                            <img src="./img/shuffle.png" class="buttonImage" draggable="false" />
+                        </div>
                     </div>
                     <div class="header-item-wrapper">
                         <span>Region: </span>
@@ -37,7 +39,7 @@
                             <option value="de">Germany</option>
                         </select>
                     </div>
-                    <button>Export</button>
+                    <button onclick="exportFunction()">Export</button>
                 </div>
             </div>
         </div>
@@ -65,7 +67,7 @@
 
                 </div>
             </div>
-            <div class="loader">
+            <div class="loader" id="loader">
                 <div class="point"></div>
                 <div class="point"></div>
                 <div class="point"></div>
@@ -83,6 +85,9 @@
         const rangeInput = document.getElementById('rangeInput');
         const numberInput = document.getElementById('numberInput');
 
+        let page = 0;
+        let isAvaliable = false;
+
         rangeInput.addEventListener('input', function () {
             numberInput.value = rangeInput.value;
         });
@@ -91,31 +96,86 @@
             rangeInput.value = numberInput.value;
         });
 
-        async function fetchUsers(clear = false) {
-            try {
-                const seed = document.querySelector("#seed").value;
-                const localization = document.querySelector("#region").value;
+        const GetRequestParams = (count) => {
+            const seed = document.querySelector("#seed").value;
+            const localization = document.querySelector("#region").value;
 
-                const response = await fetch(`/home/users?seed=${seed}&localization=${localization}&error=${numberInput.value}`);
+            return `?Seed=${seed}&Localization=${localization}&Error=${numberInput.value}&Page=${page}&Count=${count}`;
+        }
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+        async function fetchUsers(clear = false, count = 20) {
+            isAvaliable = false;
 
-                const htmlContent = await response.text();
-                const usersDiv = document.querySelector('.users');
+            if (clear) { 
+                page = 0; 
+            }
 
-                if (clear) {
-                    usersDiv.innerHTML = "";
-                }
+            const response = await fetch(`/home/users${GetRequestParams(count)}`);
+            const htmlContent = await response.text();
+            const usersDiv = document.querySelector('.users');
 
-                usersDiv.innerHTML += htmlContent;
-            } catch (error) {
-                console.error('There was a problem with the fetch operation:', error);
+            if (clear) {
+                usersDiv.innerHTML = "";
+                document.documentElement.scrollTop = 0;
+            }
+
+            usersDiv.innerHTML += htmlContent;
+            page++;
+
+            await new Promise(resolve => requestAnimationFrame(resolve));
+            isAvaliable = true;
+        }
+
+        const GenerateRandomSeed = () => {
+            document.querySelector("#seed").value = Math.floor(Math.random() * 1000);
+            fetchUsers(true);
+        }
+
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        async function handleScroll() {
+            const targetDiv = document.getElementById('loader');
+
+            if (isElementInViewport(targetDiv) && isAvaliable) {
+                await fetchUsers(false, 10);
             }
         }
 
+        const exportFunction = async () => {
+            await fetch(`/export${GetRequestParams(0)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'users.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            ;
+        }
+
         document.addEventListener('DOMContentLoaded', fetchUsers);
+        window.addEventListener('scroll', handleScroll);
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
