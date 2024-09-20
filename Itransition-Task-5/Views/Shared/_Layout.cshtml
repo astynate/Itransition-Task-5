@@ -79,103 +79,15 @@
             &copy; Andreev S, 2024 — Minsk, Belarus.
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/requests-api.js" asp-append-version="true"></script>
+    <script src="~/js/input-handler.js" asp-append-version="true"></script>
+    <script src="~/js/pagination.js" asp-append-version="true"></script>
+    <script src="~/js/export-handler.js" asp-append-version="true"></script>
     <script>
-        const rangeInput = document.getElementById('rangeInput');
-        const numberInput = document.getElementById('numberInput');
-
-        let page = 0;
-        let isAvaliable = false;
-
-        rangeInput.addEventListener('input', function () {
-            numberInput.value = rangeInput.value;
-        });
-
-        numberInput.addEventListener('input', function () {
-            rangeInput.value = numberInput.value;
-        });
-
-        const GetRequestParams = (count) => {
-            const seed = document.querySelector("#seed").value;
-            const localization = document.querySelector("#region").value;
-
-            return `?Seed=${seed}&Localization=${localization}&Error=${numberInput.value}&Page=${page}&Count=${count}`;
-        }
-
-        async function fetchUsers(clear = false, count = 20) {
-            isAvaliable = false;
-
-            if (clear) { 
-                page = 0; 
-            }
-
-            const response = await fetch(`/home/users${GetRequestParams(count)}`);
-            const htmlContent = await response.text();
-            const usersDiv = document.querySelector('.users');
-
-            if (clear) {
-                usersDiv.innerHTML = "";
-                document.documentElement.scrollTop = 0;
-            }
-
-            usersDiv.innerHTML += htmlContent;
-            page++;
-
-            await new Promise(resolve => requestAnimationFrame(resolve));
-            isAvaliable = true;
-        }
-
         const GenerateRandomSeed = () => {
             document.querySelector("#seed").value = Math.floor(Math.random() * 1000);
             fetchUsers(true);
         }
-
-        function isElementInViewport(el) {
-            const rect = el.getBoundingClientRect();
-
-            return (
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
-        }
-
-        async function handleScroll() {
-            const targetDiv = document.getElementById('loader');
-
-            if (isElementInViewport(targetDiv) && isAvaliable) {
-                await fetchUsers(false, 10);
-            }
-        }
-
-        const exportFunction = async () => {
-            await fetch(`/export${GetRequestParams(0)}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.blob();
-                })
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-                    a.download = 'users.csv';
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-            ;
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchUsers);
-        window.addEventListener('scroll', handleScroll);
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
